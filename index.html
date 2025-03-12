@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DaniEd_Moments</title>
+    <style>
+      /* Estilos gerais */
+      body {
+        font-family: Arial, sans-serif;
+        background-color: black; /* Fundo preto */
+        color: white;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+        flex-direction: column;
+        text-align: center;
+        overflow: hidden;
+        position: relative;
+      }
+
+      /* Telas */
+      .screen {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        transition: opacity 0.5s ease;
+        position: relative;
+        z-index: 2;
+      }
+
+      /* Primeira tela: Coração e texto "CLIQUE" com borda */
+      .heart-container {
+        border: 2px solid purple; /* Borda roxa */
+        border-radius: 20px; /* Bordas arredondadas */
+        padding: 20px; /* Espaçamento interno */
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        cursor: pointer;
+      }
+
+      .heart {
+        font-size: 50px;
+        color: purple; /* Coração roxo */
+        transition: transform 0.3s ease;
+      }
+      .heart:hover {
+        transform: scale(1.2);
+      }
+
+      .click-text {
+        font-size: 20px;
+        color: purple; /* Cor roxa */
+        margin-top: 10px;
+      }
+
+      /* Animação de chuva de corações contínua */
+      @keyframes rain {
+        0% {
+          transform: translateY(-100%);
+          opacity: 1;
+        }
+        100% {
+          transform: translateY(100vh);
+          opacity: 1; /* Coração permanece visível */
+        }
+      }
+
+      .heart-rain {
+        position: absolute;
+        top: -50px;
+        font-size: 24px;
+        color: purple; /* Corações roxos */
+        animation: rain 5s linear infinite; /* Animação contínua */
+        z-index: 1;
+      }
+
+      /* Esconder elementos */
+      .hidden {
+        display: none;
+        opacity: 0;
+      }
+
+      /* Player do Spotify reduzido */
+      .spotify-embed {
+        width: 70%; /* Largura menor */
+        max-width: 300px; /* Largura máxima reduzida */
+        margin-bottom: 10px; /* Espaço abaixo do player */
+      }
+
+      /* Carrossel de fotos com proporção 9:16 */
+      .carousel {
+        width: 90%; /* Largura do carrossel */
+        max-width: 300px; /* Largura máxima */
+        height: 80vh; /* Altura maior */
+        aspect-ratio: 9 / 16; /* Proporção 9:16 */
+        position: relative;
+        overflow: hidden;
+        border-radius: 20px; /* Bordas arredondadas no contêiner do carrossel */
+      }
+
+      .carousel img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover; /* Mantém a proporção da imagem sem distorção */
+        border-radius: 20px; /* Bordas arredondadas nas fotos */
+        display: none; /* Esconde todas as imagens por padrão */
+      }
+
+      .carousel img.active {
+        display: block; /* Mostra apenas a imagem ativa */
+      }
+
+      /* Botões de navegação do carrossel */
+      .carousel-button {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background-color: rgba(0, 0, 0, 0.5);
+        color: white;
+        border: none;
+        padding: 10px;
+        cursor: pointer;
+        border-radius: 50%;
+        font-size: 18px;
+      }
+
+      .carousel-button.prev {
+        left: 10px;
+      }
+
+      .carousel-button.next {
+        right: 10px;
+      }
+
+      /* Contador de tempo (não fixo) */
+      .timer {
+        font-size: 16px;
+        color: white;
+        text-align: center;
+        margin: 20px 0; /* Espaçamento acima e abaixo */
+      }
+
+      .timer b {
+        font-weight: bold; /* "Eu te amo há:" em negrito */
+      }
+
+      /* Traço estilizado */
+      .styled-line {
+        width: 80%;
+        max-width: 700px;
+        height: 2px;
+        background-color: RED; /* Cor do traço */
+        margin: 20px auto; /* Espaçamento */
+        border: none;
+      }
+
+      /* Frase final */
+      .final-message {
+        font-size: 14px;
+        color: white;
+        text-align: center;
+        margin: 20px auto;
+        max-width: 90%;
+        line-height: 1.5;
+        padding: 0 20px; /* Espaçamento interno */
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Chuva de corações -->
+    <div id="heart-container"></div>
+
+    <!-- Primeira tela: Coração e texto "CLIQUE" -->
+    <div id="screen1" class="screen">
+      <div class="heart-container" onclick="showScreen2()">
+        <div class="heart">❤️</div>
+        <div class="click-text">CLIQUE</div>
+      </div>
+    </div>
+
+    <!-- Segunda tela: Player do Spotify, carrossel de fotos, contador de tempo, traço e frase final -->
+    <div id="screen2" class="screen hidden">
+      <!-- Player do Spotify reduzido -->
+      <div class="spotify-embed">
+        <iframe
+          src="https://open.spotify.com/embed/track/6czcgwoY6kerruUTpB39X3?utm_source=generator"
+          width="100%"
+          height="80" /* Altura reduzida */
+          frameborder="0"
+          allowfullscreen=""
+          allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+          loading="lazy"
+        ></iframe>
+      </div>
+
+      <!-- Carrossel de fotos -->
+      <div class="carousel">
+        <img src="https://imgur.com/z7E1Fej.jpeg" class="active" />
+        <img src="https://i.imgur.com/RwaX3Nt.jpeg" />
+        <img src="https://imgur.com/qucnLXS.jpeg" />
+        <img src="https://imgur.com/KzaiJZl.jpeg" />
+      </div>
+
+      <!-- Contador de tempo (não fixo) -->
+      <div class="timer">
+        <b>Eu te amo há:</b><br />
+        <span id="time"></span>
+      </div>
+
+      <!-- Traço estilizado -->
+      <hr class="styled-line" />
+
+      <!-- Frase final -->
+      <p class="final-message">
+        A cada dia que passa, meu coração se enche de um carinho e uma admiração que só crescem por você. Cada momento ao seu lado me faz sentir que estou exatamente onde quero estar. Você é a razão da minha paz e da minha dedicação, e ao seu lado, tudo ganha um sentido mais verdadeiro. O que sinto por você é um amor maduro, que passe o tempo e ele se fortaleça a cada dia. Eu te amo! 💖
+      </p>
+    </div>
+
+    <script>
+      // Função para mostrar a segunda tela
+      function showScreen2() {
+        document.getElementById("screen1").classList.add("hidden");
+        document.getElementById("screen2").classList.remove("hidden");
+
+        // Recarrega o iframe do Spotify para garantir que a música comece
+        const spotifyIframe = document.querySelector(".spotify-embed iframe");
+        spotifyIframe.src = spotifyIframe.src; // Recarrega o iframe
+      }
+
+      // Função para atualizar o contador de tempo
+      function updateTimer() {
+        const startDate = new Date("2024-06-15T20:00:00"); // Data inicial: 12/06/2024 às 18h
+        const now = new Date();
+        const diff = now - startDate;
+
+        const years = Math.floor(diff / (1000 * 60 * 60 * 24 * 365));
+        const months = Math.floor(
+          (diff % (1000 * 60 * 60 * 24 * 365)) / (1000 * 60 * 60 * 24 * 30)
+        );
+        const days = Math.floor(
+          (diff % (1000 * 60 * 60 * 24 * 30)) / (1000 * 60 * 60 * 24)
+        );
+        const hours = Math.floor(
+          (diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+        );
+        const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+        // Formata o contador com os segundos na linha de baixo
+        document.getElementById("time").innerHTML = `${months} meses, ${days} dias, ${hours} horas, ${minutes} minutos<br>${seconds} segundos`;
+      }
+
+      // Atualiza o contador a cada segundo
+      setInterval(updateTimer, 1000);
+      updateTimer();
+
+      // Função para criar a chuva de corações
+      function createHeartRain() {
+        const heartContainer = document.getElementById("heart-container");
+        const numHearts = 20; // Número de corações
+
+        for (let i = 0; i < numHearts; i++) {
+          const heart = document.createElement("div");
+          heart.innerHTML = "❤️";
+          heart.classList.add("heart-rain");
+          heart.style.left = `${Math.random() * 100}vw`; // Posição horizontal aleatória
+          heart.style.animationDuration = `${Math.random() * 3 + 2}s`; // Velocidade aleatória
+          heart.style.fontSize = `${Math.random() * 20 + 10}px`; // Tamanho aleatório
+          heartContainer.appendChild(heart);
+        }
+      }
+
+      // Inicia a chuva de corações
+      createHeartRain();
+
+      // Lógica do carrossel de fotos
+      let currentPhotoIndex = 0;
+      const photos = document.querySelectorAll(".carousel img");
+
+      function showPhoto(index) {
+        photos.forEach((photo, i) => {
+          photo.classList.toggle("active", i === index);
+        });
+      }
+
+      function nextPhoto() {
+        currentPhotoIndex = (currentPhotoIndex + 1) % photos.length;
+        showPhoto(currentPhotoIndex);
+      }
+
+      function prevPhoto() {
+        currentPhotoIndex = (currentPhotoIndex - 1 + photos.length) % photos.length;
+        showPhoto(currentPhotoIndex);
+      }
+
+      // Inicia o carrossel automaticamente (opcional)
+      setInterval(nextPhoto, 3000); // Alterna a cada 3 segundos
+    </script>
+  </body>
+</html>
